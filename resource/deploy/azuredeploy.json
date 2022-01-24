@@ -1,0 +1,115 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "SQLDatabaseServerName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the SQL logical server."
+      }
+    },
+    "SQLDatabaseName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the SQL Database."
+      }
+    },
+    "SQLDatabaseAdmin": {
+      "type": "string",
+      "metadata": {
+        "description": "The administrator username of the SQL logical server."
+      }
+    },
+    "SQLDatabaseAdminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The administrator password of the SQL logical server."
+      }
+    },  
+    "PurviewAccountName": {
+      "type": "String",
+      "metadata": {
+        "description": "TODO"
+      }
+    },
+    "StorageAccountName": {
+      "type": "String",
+      "metadata": {
+        "description": "TODO"
+      }
+    },
+    "BlobContainerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the blob container."
+      }
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2020-02-02-preview",
+      "name": "[parameters('SQLDatabaseServerName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "administratorLogin": "[parameters('SQLDatabaseAdmin')]",
+        "administratorLoginPassword": "[parameters('SQLDatabaseAdminPassword')]"
+      },
+      "resources": [
+        {
+          "type": "databases",
+          "apiVersion": "2020-08-01-preview",
+          "name": "[parameters('SQLDatabaseName')]",
+          "location": "[resourceGroup().location]",
+          "sku": {
+            "name": "Standard",
+            "tier": "Standard"
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', concat(parameters('SQLDatabaseServerName')))]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Purview/accounts",
+      "apiVersion": "2021-07-01",
+      "name": "[parameters('PurviewAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard",
+        "capacity": 1
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "cloudConnectors": {},
+        "publicNetworkAccess": "Enabled",
+        "managedResourceGroupName": "[concat('managed-rg-', parameters('PurviewAccountName'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('StorageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default/{1}', parameters('StorageAccountName'), parameters('BlobContainerName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
+      ]
+    }    
+  ]
+}
