@@ -1,5 +1,5 @@
 -- 5章、6章
-create table [adpe2e].[TaxiDataSummary]
+create table [dbo].[TaxiDataSummary]
 (
     [PickUpDate] [date] NULL,
     [PickUpBorough] [varchar](200) NULL,
@@ -20,7 +20,7 @@ with
 
 go
 
-create table [adpe2e].[TaxiLocationLookup]
+create table [dbo].[TaxiLocationLookup]
 (
     [LocationID] [int] NULL,
     [Borough] [varchar](200) NULL,
