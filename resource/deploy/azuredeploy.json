@@ -4,6 +4,7 @@
   "parameters": {
     "SQLDatabaseServerName": {
       "type": "string",
+      "maxLength": 50,
       "metadata": {
         "description": "The name of the SQL logical server."
       }
@@ -34,6 +35,7 @@
     },
     "StorageAccountName": {
       "type": "String",
+      "maxLength": 11,
       "metadata": {
         "description": "TODO"
       }
@@ -50,7 +52,7 @@
     {
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2020-02-02-preview",
-      "name": "[parameters('SQLDatabaseServerName')]",
+      "name": "[concat(parameters('SQLDatabaseServerName'), uniqueString(resourceGroup().id))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "administratorLogin": "[parameters('SQLDatabaseAdmin')]",
@@ -75,7 +77,7 @@
     {
       "type": "Microsoft.Purview/accounts",
       "apiVersion": "2021-07-01",
-      "name": "[parameters('PurviewAccountName')]",
+      "name": "[concat(parameters('PurviewAccountName'), uniqueString(resourceGroup().id))]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard",
@@ -93,7 +95,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2021-06-01",
-      "name": "[parameters('StorageAccountName')]",
+      "name": "[concat(parameters('StorageAccountName'), uniqueString(resourceGroup().id))]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard_LRS"
