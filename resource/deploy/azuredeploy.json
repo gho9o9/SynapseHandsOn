@@ -69,7 +69,7 @@
             "tier": "Standard"
           },
           "dependsOn": [
-            "[resourceId('Microsoft.Sql/servers', concat(parameters('SQLDatabaseServerName')))]"
+            "[resourceId('Microsoft.Sql/servers', concat(parameters('SQLDatabaseServerName'), '-', uniqueString(resourceGroup().id)))]"
           ]
         }
       ]
@@ -89,7 +89,7 @@
       "properties": {
         "cloudConnectors": {},
         "publicNetworkAccess": "Enabled",
-        "managedResourceGroupName": "[concat('managed-rg-', parameters('PurviewAccountName'))]"
+        "managedResourceGroupName": "[concat('managed-rg-', parameters('PurviewAccountName'), '-', uniqueString(resourceGroup().id))]"
       }
     },
     {
@@ -110,7 +110,7 @@
       "apiVersion": "2021-06-01",
       "name": "[format('{0}/default/{1}', parameters('StorageAccountName'), parameters('BlobContainerName'))]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('StorageAccountName'), '-', uniqueString(resourceGroup().id)))]"
       ]
     }    
   ]
