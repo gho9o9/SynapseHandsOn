@@ -60,6 +60,18 @@
       },
       "resources": [
         {
+          "type": "firewallRules",
+          "apiVersion": "2020-08-01-preview",
+          "name": "[concat(parameters('SQLDatabaseServerName'), uniqueString(resourceGroup().id), '/AllowAllWindowsAzureIps')]",
+          "dependsOn": [
+              "[resourceId('Microsoft.Sql/servers', concat(parameters('SQLDatabaseServerName'), uniqueString(resourceGroup().id)))]"
+          ],
+          "properties": {
+              "startIpAddress": "0.0.0.0",
+              "endIpAddress": "0.0.0.0"
+          }
+        },
+        {
           "type": "databases",
           "apiVersion": "2020-08-01-preview",
           "name": "[parameters('SQLDatabaseName')]",
