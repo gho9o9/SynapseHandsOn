@@ -62,7 +62,8 @@
         {
           "type": "firewallRules",
           "apiVersion": "2020-08-01-preview",
-          "name": "[concat(parameters('SQLDatabaseServerName'), uniqueString(resourceGroup().id), '/AllowAllWindowsAzureIps')]",
+          "name": "AllowAllWindowsAzureIps",
+          "location": "[resourceGroup().location]",
           "dependsOn": [
               "[resourceId('Microsoft.Sql/servers', concat(parameters('SQLDatabaseServerName'), uniqueString(resourceGroup().id)))]"
           ],
