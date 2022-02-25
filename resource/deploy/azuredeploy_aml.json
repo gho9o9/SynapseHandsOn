@@ -82,6 +82,9 @@
                 "tier": "Basic",
                 "name": "Basic"
             },
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "properties": {
                 "friendlyName": "[parameters('workspaceName')]",
                 "storageAccount": "[variables('storageAccount')]",
