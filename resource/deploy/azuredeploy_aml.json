@@ -4,6 +4,7 @@
     "parameters": {
         "WorkspaceName": {
             "type": "String",
+            "maxLength": 9,
             "metadata": {
                 "description": "Specifies the name of the Azure Machine Learning workspace."
             }
@@ -11,11 +12,11 @@
     },
     "variables": {
         "tenantId": "[subscription().tenantId]",
-        "storageAccountName": "[concat('st', parameters('WorkspaceName'))]",
-        "keyVaultName": "[concat('kv', parameters('WorkspaceName'))]",
-        "applicationInsightsName": "[concat('ai', parameters('WorkspaceName'))]",
-        "containerRegistryName": "[concat('cr', parameters('WorkspaceName'))]",
-        "workspaceName": "[parameters('WorkspaceName')]",
+        "workspaceName": "[concat(parameters('WorkspaceName'), uniqueString(resourceGroup().id))]",
+        "storageAccountName": "[concat('st', variables('workspaceName'))]",
+        "keyVaultName": "[concat('kv', variables('workspaceName'))]",
+        "applicationInsightsName": "[concat('ai', variables('workspaceName'))]",
+        "containerRegistryName": "[concat('cr', variables('workspaceName'))]", 
         "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
         "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
         "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
