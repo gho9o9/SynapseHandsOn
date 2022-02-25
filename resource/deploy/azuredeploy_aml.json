@@ -63,7 +63,10 @@
             "apiVersion": "2018-05-01-preview",
             "name": "[concat(parameters('applicationInsightsName'), uniqueString(resourceGroup().id))]",
             "location": "[resourceGroup().location]",
-            "kind": "web"
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web"
+            }
         },
         {
             "type": "Microsoft.MachineLearningServices/workspaces",
