@@ -86,7 +86,7 @@
                 "type": "SystemAssigned"
             },
             "properties": {
-                "friendlyName": "[parameters('workspaceName')]",
+                "friendlyName": "[concat(parameters('workspaceName'), uniqueString(resourceGroup().id))]",
                 "storageAccount": "[variables('storageAccount')]",
                 "keyVault": "[variables('keyVault')]",
                 "applicationInsights": "[variables('applicationInsights')]"
