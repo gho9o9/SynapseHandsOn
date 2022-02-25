@@ -83,8 +83,7 @@
                 "name": "Basic"
             },
             "identity": {
-                "type": "SystemAssigned",
-                "userAssignedIdentities": "[json('null')]"
+                "type": "SystemAssigned"
             },
             "properties": {
                 "friendlyName": "[concat(parameters('workspaceName'), uniqueString(resourceGroup().id))]",
