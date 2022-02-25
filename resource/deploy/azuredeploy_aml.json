@@ -72,7 +72,6 @@
             "type": "Microsoft.MachineLearningServices/workspaces",
             "apiVersion": "2020-06-01",
             "name": "[concat(parameters('workspaceName'), uniqueString(resourceGroup().id))]",
-            "resourceGroup": "resourceGroup().name",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('storageAccountName'), uniqueString(resourceGroup().id)))]",
@@ -84,7 +83,8 @@
                 "name": "Basic"
             },
             "identity": {
-                "type": "SystemAssigned"
+                "type": "SystemAssigned",
+                "userAssignedIdentities": {}
             },
             "properties": {
                 "friendlyName": "[concat(parameters('workspaceName'), uniqueString(resourceGroup().id))]",
