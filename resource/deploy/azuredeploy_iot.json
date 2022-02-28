@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "IotHubName": {
+            "type": "String",
+            "maxLength": 37,
+            "metadata": {
+                "description": "Specifies the name of the Azure IoTHub."
+            }
+        }
+    },
+    "variables": {
+        "IotHubName": "[concat(parameters('IotHubName'), uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Devices/IotHubs",
+            "apiVersion": "2021-07-02",
+            "name": "[variables('IotHubName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "capacity": 1
+            }
+        }
+    ]
+}
