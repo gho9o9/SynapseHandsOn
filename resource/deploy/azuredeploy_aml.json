@@ -2,21 +2,29 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "WorkspaceName": {
+        "MachineLearningWorkspaceName": {
             "type": "String",
-            "maxLength": 9,
+            "maxLength": 19,
             "metadata": {
-                "description": "Specifies the name of the Azure Machine Learning workspace."
+                "description": "Specifies the name of the Azure Machine Learning Workspace."
+            }
+        },
+        "CognitiveServicesName": {
+            "type": "String",
+            "maxLength": 51,
+            "metadata": {
+                "description": "Specifies the name of the Azure Cognitive Services (Multi-service Account)."
             }
         }
     },
     "variables": {
         "tenantId": "[subscription().tenantId]",
-        "workspaceName": "[concat(parameters('WorkspaceName'), uniqueString(resourceGroup().id))]",
+        "workspaceName": "[concat(parameters('MachineLearningWorkspaceName'), uniqueString(resourceGroup().id))]",
         "storageAccountName": "[concat('st', variables('workspaceName'))]",
         "keyVaultName": "[concat('kv', variables('workspaceName'))]",
         "applicationInsightsName": "[concat('ai', variables('workspaceName'))]",
         "containerRegistryName": "[concat('cr', variables('workspaceName'))]", 
+        "cognitiveName": "[concat(parameters('CognitiveServicesName'), uniqueString(resourceGroup().id))]",
         "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
         "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
         "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
@@ -87,6 +95,20 @@
                 "keyVault": "[variables('keyVault')]",
                 "applicationInsights": "[variables('applicationInsights')]",
                 "containerRegistry": "[variables('containerRegistry')]"
+            }
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2021-10-01",
+            "name": "[variables('cognitiveName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S0"
+            },
+            "kind": "CognitiveServices",
+            "properties": {
+                "customSubDomainName": "[variables('cognitiveName')]",
+                "publicNetworkAccess": "Enabled"
             }
         }
     ]
