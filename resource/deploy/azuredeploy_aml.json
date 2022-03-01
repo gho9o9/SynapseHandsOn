@@ -19,27 +19,18 @@
     },
     "variables": {
         "tenantId": "[subscription().tenantId]",
-        "workspaceName": "[concat(parameters('MachineLearningWorkspaceName'), uniqueString(resourceGroup().id))]",
         "keyVaultName": "[concat(parameters('KeyVaultName'), uniqueString(resourceGroup().id))]",
-        "storageAccountName": "[concat('st', variables('workspaceName'))]",
-        "applicationInsightsName": "[concat('ai', variables('workspaceName'))]",
-        "containerRegistryName": "[concat('cr', variables('workspaceName'))]", 
-        "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-        "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-        "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
-        "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]"
+        "aml_workspaceName": "[concat(parameters('MachineLearningWorkspaceName'), uniqueString(resourceGroup().id))]",
+        "aml_keyVaultName": "[concat('kv', variables('aml_workspaceName'))]",
+        "aml_storageAccountName": "[concat('st', variables('aml_workspaceName'))]",
+        "aml_applicationInsightsName": "[concat('ai', variables('aml_workspaceName'))]",
+        "aml_containerRegistryName": "[concat('cr', variables('aml_workspaceName'))]", 
+        "aml_keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('aml_keyVaultName'))]",
+        "aml_storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('aml_storageAccountName'))]",
+        "aml_applicationInsights": "[resourceId('Microsoft.Insights/components', variables('aml_applicationInsightsName'))]",
+        "aml_containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('aml_containerRegistryName'))]"
     },
     "resources": [
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2021-06-01",
-            "name": "[variables('storageAccountName')]",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "Standard_LRS"
-            },
-            "kind": "StorageV2"
-        },
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2021-06-01-preview",
@@ -55,9 +46,33 @@
             }
         },
         {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-06-01",
+            "name": "[variables('aml_storageAccountName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "StorageV2"
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[variables('aml_keyVaultName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "tenantId": "[variables('tenantId')]",
+                "sku": {
+                    "name": "standard",
+                    "family": "A"
+                },
+                "accessPolicies": []
+            }
+        },
+        {
             "type": "Microsoft.Insights/components",
             "apiVersion": "2020-02-02",
-            "name": "[variables('applicationInsightsName')]",
+            "name": "[variables('aml_applicationInsightsName')]",
             "location": "[resourceGroup().location]",
             "kind": "web",
             "properties": {
@@ -67,7 +82,7 @@
         {
             "type": "Microsoft.ContainerRegistry/registries",
             "apiVersion": "2021-06-01-preview",
-            "name": "[variables('containerRegistryName')]",
+            "name": "[variables('aml_containerRegistryName')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard",
@@ -77,23 +92,23 @@
         {
             "type": "Microsoft.MachineLearningServices/workspaces",
             "apiVersion": "2021-07-01",
-            "name": "[variables('workspaceName')]",
+            "name": "[variables('aml_workspaceName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[variables('storageAccount')]",
-                "[variables('keyVault')]",
-                "[variables('applicationInsights')]",
-                "[variables('containerRegistry')]"
+                "[variables('aml_storageAccount')]",
+                "[variables('aml_keyVault')]",
+                "[variables('aml_applicationInsights')]",
+                "[variables('aml_containerRegistry')]"
             ],
             "identity": {
                 "type": "systemAssigned"
             },
             "properties": {
-                "friendlyName": "[variables('workspaceName')]",
-                "storageAccount": "[variables('storageAccount')]",
-                "keyVault": "[variables('keyVault')]",
-                "applicationInsights": "[variables('applicationInsights')]",
-                "containerRegistry": "[variables('containerRegistry')]"
+                "friendlyName": "[variables('aml_workspaceName')]",
+                "storageAccount": "[variables('aml_storageAccount')]",
+                "keyVault": "[variables('aml_keyVault')]",
+                "applicationInsights": "[variables('aml_applicationInsights')]",
+                "containerRegistry": "[variables('aml_containerRegistry')]"
             }
         }
     ]
