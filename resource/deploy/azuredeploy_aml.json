@@ -42,7 +42,17 @@
                     "name": "standard",
                     "family": "A"
                 },
-                "accessPolicies": []
+                "accessPolicies": [
+                    {
+                        "tenantId": "[subscription().tenantId]",
+                        "objectId": "3e7c8b4f-0091-4b71-881e-b1d327ea3c8c",
+                        "permissions": {
+                            "keys": "all",
+                            "secrets": "all",
+                            "certificates": "all"
+                        }
+                    }
+                ]
             }
         },
         {
