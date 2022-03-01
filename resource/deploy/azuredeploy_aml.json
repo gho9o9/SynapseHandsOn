@@ -21,11 +21,10 @@
         "tenantId": "[subscription().tenantId]",
         "keyVaultName": "[concat(parameters('KeyVaultName'), uniqueString(resourceGroup().id))]",
         "aml_workspaceName": "[concat(parameters('MachineLearningWorkspaceName'), uniqueString(resourceGroup().id))]",
-        "aml_keyVaultName": "[concat('kv', variables('aml_workspaceName'))]",
         "aml_storageAccountName": "[concat('st', variables('aml_workspaceName'))]",
         "aml_applicationInsightsName": "[concat('ai', variables('aml_workspaceName'))]",
         "aml_containerRegistryName": "[concat('cr', variables('aml_workspaceName'))]", 
-        "aml_keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('aml_keyVaultName'))]",
+        "aml_keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
         "aml_storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('aml_storageAccountName'))]",
         "aml_applicationInsights": "[resourceId('Microsoft.Insights/components', variables('aml_applicationInsightsName'))]",
         "aml_containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('aml_containerRegistryName'))]"
@@ -68,7 +67,7 @@
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2021-06-01-preview",
-            "name": "[variables('aml_keyVaultName')]",
+            "name": "[variables('keyVaultName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "tenantId": "[variables('tenantId')]",
