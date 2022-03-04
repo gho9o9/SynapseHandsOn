@@ -20,7 +20,7 @@
             "name": "[variables('cognitiveName')]",
             "location": "[resourceGroup().location]",
             "sku": {
-                "name": "S0"
+                "name": "S"
             },
             "kind": "TextAnalytics"
         }
