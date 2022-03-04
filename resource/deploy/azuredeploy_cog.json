@@ -22,11 +22,7 @@
             "sku": {
                 "name": "S0"
             },
-            "kind": "CognitiveServices",
-            "properties": {
-                "customSubDomainName": "[variables('cognitiveName')]",
-                "publicNetworkAccess": "Enabled"
-            }
+            "kind": "AnomalyDetector"
         }
     ]
 }
