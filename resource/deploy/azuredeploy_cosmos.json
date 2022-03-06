@@ -36,19 +36,6 @@
                     }
                 ]
             }
-        },
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
-            "apiVersion": "2021-10-15",
-            "name": "[variables('salesDBName')]",
-            "properties": {
-                "resource": {
-                    "id": "SalesDB"
-                }
-            },
-            "dependsOn": [
-                "[variables('cosmos')]"
-            ]
         }
     ]
 }
