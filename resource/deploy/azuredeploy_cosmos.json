@@ -17,7 +17,7 @@
         "salesContainerName" : "[concat(variables('cosmosName'), '/SalesDB/Sales')]",
         "salesorderContainerName" : "[concat(variables('cosmosName'), '/SalesDB/SalesOrder')]",
         "cosmos": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosName'))]",
-        "salesDB": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('salesDBName'))]"
+        "salesDB": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosName'), 'SalesDB')]"
     },
     "resources": [
         {
