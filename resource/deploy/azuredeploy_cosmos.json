@@ -32,12 +32,7 @@
                     "schemaType": "WellDefined"
                 },
                 "databaseAccountOfferType": "Standard",
-                "locations": [
-                    {
-                        "failoverPriority": 0,
-                        "isZoneRedundant": false
-                    }
-                ],
+                "locations": "[resourceGroup().location]",
                 "capabilities": [
                     {
                         "name": "EnableServerless"
