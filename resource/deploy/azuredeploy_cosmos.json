@@ -1,0 +1,120 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "CosmosDBAccountName": {
+            "type": "String",
+            "maxLength": 33,
+            "metadata": {
+                "description": "Specifies the name of the Azure Cosmos DB."
+            }
+        }
+    },
+    "variables": {
+        "cosmosName": "[concat(parameters('CosmosDBAccountName'), uniqueString(resourceGroup().id))]",
+        "salesDBName" : "[concat(variables('cosmosName'), '/SalesDB')]",
+        "customerContainerName" : "[concat(variables('cosmosName'), '/SalesDB/Customer')]",
+        "salesContainerName" : "[concat(variables('cosmosName'), '/SalesDB/Sales')]",
+        "salesorderContainerName" : "[concat(variables('cosmosName'), '/SalesDB/SalesOrder')]",
+        "cosmos": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosName'))]",
+        "salesDB": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('salesDBName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('cosmosName')]",
+            "location": "[resourceGroup().location]",
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "enableAnalyticalStorage": true,
+                "analyticalStorageConfiguration": {
+                    "schemaType": "WellDefined"
+                },
+                "databaseAccountOfferType": "Standard",
+                "locations": [
+                    {
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "capabilities": [
+                    {
+                        "name": "EnableServerless"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('salesDBName')]",
+            "dependsOn": [
+                "[variables('cosmos')]"
+            ]
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('customerContainerName')]",
+            "dependsOn": [
+                "[variables('cosmos')]",
+                "[variables('salesDB')]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "Customer",
+                    "partitionKey": {
+                        "paths": [
+                            "/customerId"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "analyticalStorageTtl": -1
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('salesContainerName')]",
+            "dependsOn": [
+                "[variables('cosmos')]",
+                "[variables('salesDB')]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "Sales",
+                    "partitionKey": {
+                        "paths": [
+                            "/id"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "analyticalStorageTtl": -1
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('salesorderContainerName')]",
+            "dependsOn": [
+                "[variables('cosmos')]",
+                "[variables('salesDB')]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "SalesOrder",
+                    "partitionKey": {
+                        "paths": [
+                            "/customerId"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "analyticalStorageTtl": -1
+                }
+            }
+        }
+    ]
+}
