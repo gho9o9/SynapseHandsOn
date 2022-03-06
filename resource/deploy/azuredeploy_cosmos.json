@@ -29,12 +29,94 @@
             "properties": {
                 "enableAnalyticalStorage": true,
                 "databaseAccountOfferType": "Standard",
-                "locations": "[resourceGroup().location]",
+                "locations": [
+                    {
+                        "locationName": "[resourceGroup().location]",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
                 "capabilities": [
                     {
                         "name": "EnableServerless"
                     }
                 ]
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('salesDBName')]",
+            "properties": {
+                "resource": {
+                    "id": "SalesDB"
+                }
+            },
+            "dependsOn": [
+                "[variables('cosmos')]"
+            ]
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('customerContainerName')]",
+            "dependsOn": [
+                "[variables('cosmos')]",
+                "[variables('salesDB')]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "Customer",
+                    "partitionKey": {
+                        "paths": [
+                            "/customerId"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "analyticalStorageTtl": -1
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('salesContainerName')]",
+            "dependsOn": [
+                "[variables('cosmos')]",
+                "[variables('salesDB')]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "Sales",
+                    "partitionKey": {
+                        "paths": [
+                            "/id"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "analyticalStorageTtl": -1
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-10-15",
+            "name": "[variables('salesorderContainerName')]",
+            "dependsOn": [
+                "[variables('cosmos')]",
+                "[variables('salesDB')]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "SalesOrder",
+                    "partitionKey": {
+                        "paths": [
+                            "/customerId"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "analyticalStorageTtl": -1
+                }
             }
         }
     ]
