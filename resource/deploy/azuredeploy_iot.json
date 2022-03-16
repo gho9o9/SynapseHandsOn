@@ -8,10 +8,18 @@
             "metadata": {
                 "description": "Specifies the name of the Azure IoTHub."
             }
+        },
+        "StreamJobName": {
+            "type": "String",
+            "maxLength": 50,
+            "metadata": {
+                "description": "Specifies the name of the Azure Stream Analytics Jobs."
+            }
         }
     },
     "variables": {
-        "IotHubName": "[concat(parameters('IotHubName'), uniqueString(resourceGroup().id))]"
+        "IotHubName": "[concat(parameters('IotHubName'), uniqueString(resourceGroup().id))]",
+        "StreamJobName": "[concat(parameters('StreamJobName'), uniqueString(resourceGroup().id))]"
     },
     "resources": [
         {
@@ -22,6 +30,17 @@
             "sku": {
                 "name": "B1",
                 "capacity": 1
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/StreamingJobs",
+            "apiVersion": "2020-03-01",
+            "name": "[variables('StreamJobName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "name": "standard"
+                }
             }
         }
     ]
