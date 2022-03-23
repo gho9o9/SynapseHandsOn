@@ -54,8 +54,6 @@
     "PurviewAccountName": "[concat(parameters('PurviewAccountName'), uniqueString(resourceGroup().id))]",
     "StorageAccountName": "[concat(parameters('StorageAccountName'), uniqueString(resourceGroup().id))]",
     "SQLDatabaseServer": "[resourceId('Microsoft.Sql/servers', variables('SQLDatabaseServerName'))]",
-    "SQLDatabase": "[resourceId('Microsoft.Sql/servers/databases', variables('SQLDatabaseName'))]",
-    "PurviewAccount": "[resourceId('Microsoft.Purview/accounts', variables('PurviewAccountName'))]",
     "StorageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('StorageAccountName'))]"
   },
   "resources": [
@@ -88,9 +86,12 @@
           "name": "[variables('SQLDatabaseName')]",
           "location": "[resourceGroup().location]",
           "sku": {
-            "name": "Standard",
-            "tier": "Standard"
+              "name": "GP_S_Gen5",
+              "tier": "GeneralPurpose",
+              "family": "Gen5",
+              "capacity": 1
           },
+          "kind": "v12.0,user,vcore,serverless",
           "dependsOn": [
             "[variables('SQLDatabaseServer')]"
           ]
