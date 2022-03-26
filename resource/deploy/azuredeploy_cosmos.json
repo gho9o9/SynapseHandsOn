@@ -69,7 +69,7 @@
                     "id": "Customer",
                     "partitionKey": {
                         "paths": [
-                            "/customerId"
+                            "/id"
                         ],
                         "kind": "Hash"
                     },
