@@ -1,1 +1,1 @@
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/gho9o9/SynapseHandsOn/main/resource/deploy/azuredeploy.json?token=GHSAT0AAAAAABQOOIQ4X5WLVHGHCHB5JSMKYSGSA6Q)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgho9o9%2FSynapseHandsOn%2Fmain%2Fresource%2Fdeploy%2Fazuredeploy.json%3Ftoken%3DGHSAT0AAAAAABQOOIQ55CYMM5XSQHQ3365CYSGSEAQ)
