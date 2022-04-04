@@ -1,0 +1,136 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "MachineLearningWorkspaceName": {
+            "type": "String",
+            "maxLength": 19,
+            "metadata": {
+                "description": "Specifies the name of the Azure Machine Learning Workspace."
+            }
+        },
+        "KeyVaultName": {
+            "type": "String",
+            "maxLength": 51,
+            "metadata": {
+                "description": "Specifies the name of the Azure Key Vault."
+            }
+        },
+        "AnomalyDetectorName": {
+            "type": "String",
+            "maxLength": 51,
+            "metadata": {
+                "description": "Specifies the name of the Azure Cognitive Services (Multi-service Account)."
+            }
+        },
+        "TextAnalyticsName": {
+            "type": "String",
+            "maxLength": 51,
+            "metadata": {
+                "description": "Specifies the name of the Azure Cognitive Services (Multi-service Account)."
+            }
+        }
+    },
+    "variables": {
+        "tenantId": "[subscription().tenantId]",
+        "workspaceName": "[concat(parameters('MachineLearningWorkspaceName'), uniqueString(resourceGroup().id))]",
+        "keyVaultName": "[concat(parameters('KeyVaultName'), uniqueString(resourceGroup().id))]",
+        "storageAccountName": "[concat('st', variables('workspaceName'))]",
+        "applicationInsightsName": "[concat('ai', variables('workspaceName'))]",
+        "containerRegistryName": "[concat('cr', variables('workspaceName'))]", 
+        "anomalyName": "[concat(parameters('AnomalyDetectorName'), uniqueString(resourceGroup().id))]",
+        "sentimentName": "[concat(parameters('TextAnalyticsName'), uniqueString(resourceGroup().id))]",
+        "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+        "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+        "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-06-01",
+            "name": "[variables('storageAccountName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "StorageV2"
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[variables('keyVaultName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "tenantId": "[variables('tenantId')]",
+                "sku": {
+                    "name": "standard",
+                    "family": "A"
+                },
+                "accessPolicies": []
+            }
+        },
+        {
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[variables('applicationInsightsName')]",
+            "location": "[resourceGroup().location]",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web"
+            }
+        },
+        {
+            "type": "Microsoft.ContainerRegistry/registries",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[variables('containerRegistryName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard"
+            }
+        },
+        {
+            "type": "Microsoft.MachineLearningServices/workspaces",
+            "apiVersion": "2021-07-01",
+            "name": "[variables('workspaceName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[variables('storageAccount')]",
+                "[variables('keyVault')]",
+                "[variables('applicationInsights')]",
+                "[variables('containerRegistry')]"
+            ],
+            "identity": {
+                "type": "systemAssigned"
+            },
+            "properties": {
+                "friendlyName": "[variables('workspaceName')]",
+                "storageAccount": "[variables('storageAccount')]",
+                "keyVault": "[variables('keyVault')]",
+                "applicationInsights": "[variables('applicationInsights')]",
+                "containerRegistry": "[variables('containerRegistry')]"
+            }
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2021-10-01",
+            "name": "[variables('anomalyName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S0"
+            },
+            "kind": "AnomalyDetector"
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2021-10-01",
+            "name": "[variables('sentimentName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S"
+            },
+            "kind": "TextAnalytics"
+        }
+    ]
+}
