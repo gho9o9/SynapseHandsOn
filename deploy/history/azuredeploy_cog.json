@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AnomalyDetectorName": {
+            "type": "String",
+            "maxLength": 51,
+            "metadata": {
+                "description": "Specifies the name of the Azure Cognitive Services (Multi-service Account)."
+            }
+        },
+        "TextAnalyticsName": {
+            "type": "String",
+            "maxLength": 51,
+            "metadata": {
+                "description": "Specifies the name of the Azure Cognitive Services (Multi-service Account)."
+            }
+        }
+    },
+    "variables": {
+        "anomalyName": "[concat(parameters('AnomalyDetectorName'), uniqueString(resourceGroup().id))]",
+        "sentimentName": "[concat(parameters('TextAnalyticsName'), uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2021-10-01",
+            "name": "[variables('anomalyName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S0"
+            },
+            "kind": "AnomalyDetector"
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2021-10-01",
+            "name": "[variables('sentimentName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S"
+            },
+            "kind": "TextAnalytics"
+        }
+    ]
+}
