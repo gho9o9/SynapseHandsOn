@@ -1,1 +1,1 @@
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgho9o9%2FSynapseHandsOn%2Fmain%2Fresource%2Fdeploy%2Fazuredeploy_aml.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgho9o9%2FSynapseHandsOn%2Fmain%2Fresource%2Fdeploy%2Fazuredeploy_ml.json)
