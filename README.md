@@ -13,7 +13,7 @@
 ## ハンズオン ARM テンプレート
 | 対象 | デプロイ |
 | :---- | :---- |
-| Day-2 / Day-3 用| [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgho9o9%2FSynapseHandsOn%2Fmain%2Fresource%2Fdeploy%2Fazuredeploy_integration.json) |
+| Day-2 / Day-3 用| [![Deploy to AAzure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgho9o9%2FSynapseHandsOn%2Fmain%2Fresource%2Fdeploy%2Fazuredeploy_integration.json) |
 | Day-4 用| [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgho9o9%2FSynapseHandsOn%2Fmain%2Fresource%2Fdeploy%2Fazuredeploy_ml.json) |
 | Day-5 用| [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgho9o9%2FSynapseHandsOn%2Fmain%2Fresource%2Fdeploy%2Fazuredeploy_realtime.json) |
 
