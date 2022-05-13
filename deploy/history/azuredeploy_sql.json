@@ -64,7 +64,7 @@
             "name": "[variables('SQLDatabaseName')]",
             "location": "[resourceGroup().location]",
             "sku": {
-                "name": "GP_S_Gen5",
+                "name": "GP_Gen5",
                 "tier": "GeneralPurpose",
                 "family": "Gen5",
                 "capacity": 2
