@@ -1,0 +1,80 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "SQLDatabaseServerName": {
+        "type": "string",
+        "maxLength": 50,
+        "metadata": {
+          "description": "Specifies the name of the SQL Database Logical Server."
+        }
+      },
+      "SQLDatabaseName": {
+        "type": "string",
+        "maxLength": 115,
+        "metadata": {
+          "description": "Specifies the name of the SQL Database."
+        }
+      },
+      "SQLDatabaseAdmin": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the administrator username of the SQL Database Logical Server."
+        }
+      },
+      "SQLDatabaseAdminPassword": {
+        "type": "securestring",
+        "metadata": {
+          "description": "Specifies the administrator password of the SQL Database Logical Server."
+        }
+      }
+    },
+    "variables": {
+      "SQLDatabaseServerName": "[concat(parameters('SQLDatabaseServerName'), uniqueString(resourceGroup().id))]",
+      "SQLDatabaseName": "[parameters('SQLDatabaseName')]",
+      "SQLDatabaseServer": "[resourceId('Microsoft.Sql/servers', variables('SQLDatabaseServerName'))]",
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Sql/servers",
+        "apiVersion": "2020-02-02-preview",
+        "name": "[variables('SQLDatabaseServerName')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "administratorLogin": "[parameters('SQLDatabaseAdmin')]",
+          "administratorLoginPassword": "[parameters('SQLDatabaseAdminPassword')]"
+        },
+        "resources": [
+          {
+            "type": "firewallRules",
+            "apiVersion": "2020-08-01-preview",
+            "name": "AllowAllWindowsAzureIps",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[variables('SQLDatabaseServer')]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            }
+          },
+          {
+            "type": "databases",
+            "apiVersion": "2020-08-01-preview",
+            "name": "[variables('SQLDatabaseName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "GP_S_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 2
+            },
+            "kind": "v12.0,user,vcore",
+            "dependsOn": [
+              "[variables('SQLDatabaseServer')]"
+            ]
+          }
+        ]
+      }
+    ]
+  }
