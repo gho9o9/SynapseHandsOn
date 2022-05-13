@@ -32,7 +32,7 @@
     "variables": {
       "SQLDatabaseServerName": "[concat(parameters('SQLDatabaseServerName'), uniqueString(resourceGroup().id))]",
       "SQLDatabaseName": "[parameters('SQLDatabaseName')]",
-      "SQLDatabaseServer": "[resourceId('Microsoft.Sql/servers', variables('SQLDatabaseServerName'))]",
+      "SQLDatabaseServer": "[resourceId('Microsoft.Sql/servers', variables('SQLDatabaseServerName'))]"
     },
     "resources": [
       {
@@ -75,6 +75,6 @@
             ]
           }
         ]
-      }
+      } 
     ]
   }
