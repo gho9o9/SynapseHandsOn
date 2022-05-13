@@ -38,11 +38,10 @@
         "storageAccountName": "[concat('st', variables('workspaceName'))]",
         "applicationInsightsName": "[concat('ai', variables('workspaceName'))]",
         "containerRegistryName": "[concat('cr', variables('workspaceName'))]", 
-        "keyVault-mlName": "[concat('kv', variables('workspaceName'))]", 
         "anomalyName": "[concat(parameters('AnomalyDetectorName'), uniqueString(resourceGroup().id))]",
         "sentimentName": "[concat(parameters('TextAnalyticsName'), uniqueString(resourceGroup().id))]",
-        "keyVault-ml": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVault-mlName'))]",
         "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
         "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
         "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]"
     },
@@ -56,20 +55,6 @@
                 "name": "Standard_LRS"
             },
             "kind": "StorageV2"
-        },
-        {
-            "type": "Microsoft.KeyVault/vaults",
-            "apiVersion": "2021-06-01-preview",
-            "name": "[variables('keyVault-mlName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "tenantId": "[variables('tenantId')]",
-                "sku": {
-                    "name": "standard",
-                    "family": "A"
-                },
-                "accessPolicies": []
-            }
         },
         {
             "type": "Microsoft.Insights/components",
@@ -98,7 +83,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[variables('storageAccount')]",
-                "[variables('keyVault-ml')]",
+                "[variables('keyVault')]",
                 "[variables('applicationInsights')]",
                 "[variables('containerRegistry')]"
             ],
@@ -108,7 +93,7 @@
             "properties": {
                 "friendlyName": "[variables('workspaceName')]",
                 "storageAccount": "[variables('storageAccount')]",
-                "keyVault": "[variables('keyVault-ml')]",
+                "keyVault": "[variables('keyVault')]",
                 "applicationInsights": "[variables('applicationInsights')]",
                 "containerRegistry": "[variables('containerRegistry')]"
             }
