@@ -1,5 +1,5 @@
--- 5章、6章
-create table [dbo].[TaxiDataSummary]
+-- 5章
+CREATE TABLE [dbo].[TaxiDataSummary]
 (
     [PickUpDate] [date] NULL,
     [PickUpBorough] [varchar](200) NULL,
@@ -12,24 +12,23 @@ create table [dbo].[TaxiDataSummary]
     [TotalFareAmount] [decimal](38, 2) NULL,
     [TotalTripAmount] [decimal](38, 2) NULL
 )
-with
+WITH
 (
-    distribution = round_robin,
-    clustered columnstore index
+	DISTRIBUTION = round_robin,
+	CLUSTERED COLUMNSTORE INDEX
 )
+GO
 
-go
-
-create table [dbo].[TaxiLocationLookup]
+CREATE TABLE [dbo].[TaxiLocationLookup]
 (
     [LocationID] [int] NULL,
     [Borough] [varchar](200) NULL,
     [Zone] [varchar](200) NULL,
     [ServiceZone] [varchar](200) NULL
 )
-with
+WITH
 (
-    distribution = round_robin,
-    clustered columnstore index
+	DISTRIBUTION = round_robin,
+	CLUSTERED COLUMNSTORE INDEX
 )
-go
+GO
