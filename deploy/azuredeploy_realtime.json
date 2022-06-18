@@ -11,7 +11,7 @@
         },
         "CosmosDBAccountName": {
             "type": "String",
-            "maxLength": 33,
+            "maxLength": 31,
             "metadata": {
                 "description": "Specifies the name of the Azure Cosmos DB."
             }

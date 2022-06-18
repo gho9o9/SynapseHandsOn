@@ -43,6 +43,7 @@
       },
       "BlobContainerName": {
         "type": "string",
+        "maxLength": 50,
         "metadata": {
           "description": "Specifies the name of the Blob Container."
         }

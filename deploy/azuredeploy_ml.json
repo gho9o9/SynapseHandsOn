@@ -4,14 +4,14 @@
     "parameters": {
         "MachineLearningWorkspaceName": {
             "type": "String",
-            "maxLength": 19,
+            "maxLength": 9,
             "metadata": {
                 "description": "Specifies the name of the Azure Machine Learning Workspace."
             }
         },
         "KeyVaultName": {
             "type": "String",
-            "maxLength": 51,
+            "maxLength": 11,
             "metadata": {
                 "description": "Specifies the name of the Azure Key Vault."
             }
